@@ -25,6 +25,11 @@ const projects = [
     stack: ["Next.js", "FastAPI", "Python", "MongoDB"],
     href: "https://github.com/devakhil06/Metrivo",
     className: "metrivo",
+    image: "https://raw.githubusercontent.com/devakhil06/Metrivo/main/public/og.png",
+    imageAlt: "Metrivo financial analytics dashboard",
+    problem: "Small businesses have useful financial data, but it is scattered across UPI statements, bank records and spreadsheets.",
+    build: "Built an ingestion-to-insight workflow that normalises transactions, surfaces business metrics and lets an AI Analyst answer questions from the user’s own data.",
+    engineering: "Document ingestion, transaction classification, deduplication, analytical dashboards, grounded AI answers, forecasting and anomaly detection.",
   },
   {
     number: "02",
@@ -35,6 +40,11 @@ const projects = [
     stack: ["React", "Node.js", "Socket.IO", "MongoDB"],
     href: "https://github.com/devakhil06/SyncNode",
     className: "syncnode",
+    image: "https://github.com/user-attachments/assets/314f874c-5a4f-4cac-bb69-556f0d13e90d",
+    imageAlt: "SyncNode project management dashboard",
+    problem: "Small teams often split their work across chats, documents and spreadsheets, making ownership and progress difficult to follow.",
+    build: "Built a shared workspace where teams can create projects, assign tasks, upload files and receive real-time updates from one interface.",
+    engineering: "React and Vite frontend, Express APIs, JWT authentication, MongoDB persistence, Cloudinary uploads and Socket.IO collaboration.",
   },
 ];
 
@@ -75,13 +85,19 @@ export default function Home() {
       { threshold: 0.14 },
     );
     document.querySelectorAll(".reveal").forEach((element) => observer.observe(element));
+    const onVisibilityChange = () => {
+      document.body.classList.toggle("is-page-hidden", document.hidden);
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("pointermove", onPointer, { passive: true });
+    document.addEventListener("visibilitychange", onVisibilityChange);
     onScroll();
+    onVisibilityChange();
     return () => {
       observer.disconnect();
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("pointermove", onPointer);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
     };
   }, []);
 
@@ -120,7 +136,7 @@ export default function Home() {
           </div>
           <div className="focus-reel hero-rise" aria-label="Focused on AI systems, machine learning products and full-stack experiences">
             <span className="focus-label">FOCUS /</span>
-            <div className="focus-window">
+            <div className="focus-window" aria-hidden="true">
               <div className="focus-track">
                 <span>AI systems</span>
                 <span>ML products</span>
@@ -146,7 +162,15 @@ export default function Home() {
 
         <aside className="profile-card hero-rise">
           <div className="profile-image-wrap">
-            <img src="https://avatars.githubusercontent.com/u/292966275?v=4" alt="Tanuku Akhil" />
+            <img
+              src="https://avatars.githubusercontent.com/u/292966275?v=4"
+              alt="Tanuku Akhil"
+              width="580"
+              height="725"
+              loading="eager"
+              decoding="async"
+              fetchPriority="high"
+            />
             <div className="profile-stamp">HYD · INDIA</div>
           </div>
           <div className="profile-meta">
@@ -180,34 +204,42 @@ export default function Home() {
 
         <div className="project-grid">
           {projects.map((project, index) => (
-            <a className={`project-card ${project.className} reveal ${index % 2 === 0 ? "reveal-left" : "reveal-right"}`} href={project.href} target="_blank" rel="noreferrer" key={project.title}>
+            <article className={`project-card ${project.className} reveal ${index % 2 === 0 ? "reveal-left" : "reveal-right"}`} key={project.title}>
               <div className="project-topline">
                 <span>{project.number}</span>
                 <span>{project.eyebrow}</span>
-                <span className="project-arrow"><Arrow diagonal /></span>
+                <a className="project-arrow" href={project.href} target="_blank" rel="noreferrer" aria-label={`Open ${project.title} on GitHub`}><Arrow diagonal /></a>
               </div>
-              <div className="project-visual" aria-hidden="true">
-                {project.className === "metrivo" ? (
-                  <div className="analytics-window">
-                    <div className="window-bar"><i /><i /><i /></div>
-                    <div className="chart-copy"><span>Revenue signal</span><strong>+24.8%</strong></div>
-                    <div className="chart-bars"><i /><i /><i /><i /><i /><i /><i /></div>
-                    <div className="ai-pill">AI analyst · grounded</div>
-                  </div>
-                ) : (
-                  <div className="board-window">
-                    <div className="board-sidebar"><i /><i /><i /><i /></div>
-                    <div className="board-column"><span>IN PROGRESS</span><i /><i /></div>
-                    <div className="board-column"><span>REVIEW</span><i /><i /><i /></div>
-                  </div>
-                )}
-              </div>
+              <a className="project-visual project-screenshot" href={project.href} target="_blank" rel="noreferrer" aria-label={`View ${project.title} repository`}>
+                <img src={project.image} alt={project.imageAlt} width="1200" height="675" loading="lazy" decoding="async" />
+                <span className="screenshot-label">ACTUAL PRODUCT VIEW</span>
+              </a>
               <div className="project-copy">
                 <h3>{project.title}</h3>
                 <p>{project.description}</p>
                 <div className="tag-list">{project.stack.map((item) => <span key={item}>{item}</span>)}</div>
+                <div className="project-actions">
+                  <a className="project-link" href={project.href} target="_blank" rel="noreferrer">View GitHub <Arrow diagonal /></a>
+                  <details className="case-study">
+                    <summary>Read case study <span aria-hidden="true">+</span></summary>
+                    <div className="case-study-content">
+                      <div>
+                        <span>01 / Problem</span>
+                        <p>{project.problem}</p>
+                      </div>
+                      <div>
+                        <span>02 / What I built</span>
+                        <p>{project.build}</p>
+                      </div>
+                      <div>
+                        <span>03 / Engineering</span>
+                        <p>{project.engineering}</p>
+                      </div>
+                    </div>
+                  </details>
+                </div>
               </div>
-            </a>
+            </article>
           ))}
         </div>
       </section>
@@ -248,12 +280,12 @@ export default function Home() {
           <div className="skill-reels" aria-label="Technical skills">
             <div className="skill-reel">
               <div className="skill-reel-track">
-                {[...skills.slice(0, 5), ...skills.slice(0, 5)].map((skill, index) => <span key={`top-${skill}-${index}`}>{skill}<i>↗</i></span>)}
+                {[...skills.slice(0, 5), ...skills.slice(0, 5)].map((skill, index) => <span aria-hidden={index >= 5} key={`top-${skill}-${index}`}>{skill}<i>↗</i></span>)}
               </div>
             </div>
             <div className="skill-reel reverse">
               <div className="skill-reel-track">
-                {[...skills.slice(5), ...skills.slice(5)].map((skill, index) => <span key={`bottom-${skill}-${index}`}>{skill}<i>✦</i></span>)}
+                {[...skills.slice(5), ...skills.slice(5)].map((skill, index) => <span aria-hidden={index >= 5} key={`bottom-${skill}-${index}`}>{skill}<i>✦</i></span>)}
               </div>
             </div>
             <p className="skill-caption">A practical toolkit for taking ideas from model to interface.</p>
