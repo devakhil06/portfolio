@@ -80,23 +80,51 @@ export default function Home() {
         cursorRef.current.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0)`;
       }
     };
-    const observer = new IntersectionObserver(
-      (entries) => entries.forEach((entry) => entry.isIntersecting && entry.target.classList.add("is-visible")),
-      { threshold: 0.14 },
-    );
-    document.querySelectorAll(".reveal").forEach((element) => observer.observe(element));
+    const pointerQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
+    const syncPointerMode = () => {
+      window.removeEventListener("pointermove", onPointer);
+      if (pointerQuery.matches) {
+        window.addEventListener("pointermove", onPointer, { passive: true });
+      } else if (cursorRef.current) {
+        cursorRef.current.style.transform = "translate3d(-100px, -100px, 0)";
+      }
+    };
+    const revealElements = document.querySelectorAll(".reveal");
+    let observer: IntersectionObserver | null = null;
+    if ("IntersectionObserver" in window) {
+      observer = new IntersectionObserver(
+        (entries) => entries.forEach((entry) => entry.isIntersecting && entry.target.classList.add("is-visible")),
+        { threshold: 0.08, rootMargin: "0px 0px -7% 0px" },
+      );
+      revealElements.forEach((element) => observer?.observe(element));
+    } else {
+      revealElements.forEach((element) => element.classList.add("is-visible"));
+    }
     const onVisibilityChange = () => {
       document.body.classList.toggle("is-page-hidden", document.hidden);
     };
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMenuOpen(false);
+    };
+    const onResize = () => {
+      if (window.innerWidth > 900) setMenuOpen(false);
+      onScroll();
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("pointermove", onPointer, { passive: true });
+    window.addEventListener("resize", onResize, { passive: true });
+    window.addEventListener("keydown", onKeyDown);
+    pointerQuery.addEventListener("change", syncPointerMode);
     document.addEventListener("visibilitychange", onVisibilityChange);
+    syncPointerMode();
     onScroll();
     onVisibilityChange();
     return () => {
-      observer.disconnect();
+      observer?.disconnect();
       window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onResize);
+      window.removeEventListener("keydown", onKeyDown);
       window.removeEventListener("pointermove", onPointer);
+      pointerQuery.removeEventListener("change", syncPointerMode);
       document.removeEventListener("visibilitychange", onVisibilityChange);
     };
   }, []);
@@ -112,7 +140,7 @@ export default function Home() {
         <a className="wordmark" href="#top" aria-label="Akhil, back to top">
           AKHIL<span>.</span>
         </a>
-        <nav className={menuOpen ? "nav-links is-open" : "nav-links"} aria-label="Main navigation">
+        <nav id="main-navigation" className={menuOpen ? "nav-links is-open" : "nav-links"} aria-label="Main navigation">
           <a href="#work" onClick={closeMenu}>Work</a>
           <a href="#about" onClick={closeMenu}>About</a>
           <a href="#credentials" onClick={closeMenu}>Credentials</a>
@@ -120,7 +148,7 @@ export default function Home() {
         <a className="header-contact" href="mailto:tanukuakhil.tech@gmail.com">
           Let&apos;s talk <Arrow diagonal />
         </a>
-        <button className="menu-button" onClick={() => setMenuOpen((value) => !value)} aria-expanded={menuOpen} aria-label="Toggle menu">
+        <button className={menuOpen ? "menu-button is-open" : "menu-button"} onClick={() => setMenuOpen((value) => !value)} aria-expanded={menuOpen} aria-controls="main-navigation" aria-label="Toggle menu">
           <span />
           <span />
         </button>
