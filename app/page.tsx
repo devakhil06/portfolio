@@ -54,9 +54,17 @@ export default function Home() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const cursorRef = useRef<HTMLDivElement>(null);
+  const progressRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 32);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 32);
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = scrollable > 0 ? window.scrollY / scrollable : 0;
+      if (progressRef.current) {
+        progressRef.current.style.transform = `scaleX(${progress})`;
+      }
+    };
     const onPointer = (event: PointerEvent) => {
       if (cursorRef.current) {
         cursorRef.current.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0)`;
@@ -81,6 +89,7 @@ export default function Home() {
 
   return (
     <main>
+      <div className="scroll-progress" ref={progressRef} aria-hidden="true" />
       <div className="cursor-orbit" ref={cursorRef} aria-hidden="true">🏸</div>
 
       <header className={scrolled ? "site-header is-scrolled" : "site-header"}>
@@ -109,9 +118,20 @@ export default function Home() {
             <span className="status-dot" />
             Open to AI/ML roles
           </div>
+          <div className="focus-reel hero-rise" aria-label="Focused on AI systems, machine learning products and full-stack experiences">
+            <span className="focus-label">FOCUS /</span>
+            <div className="focus-window">
+              <div className="focus-track">
+                <span>AI systems</span>
+                <span>ML products</span>
+                <span>full-stack experiences</span>
+                <span>AI systems</span>
+              </div>
+            </div>
+          </div>
           <h1 className="hero-rise hero-title">
-            I build intelligence
-            <span>into useful systems.</span>
+            <span className="hero-line">I build <em>intelligence</em></span>
+            <span className="hero-line hero-line-alt">into useful systems.</span>
           </h1>
           <div className="hero-bottom hero-rise">
             <p>
@@ -152,15 +172,15 @@ export default function Home() {
       <section className="section work-section" id="work">
         <div className="section-heading reveal">
           <p className="kicker">SELECTED WORK</p>
-          <h2>Projects built to solve<br />real problems.</h2>
+          <h2>Projects built to solve<br /><em>real problems.</em></h2>
           <a href="https://github.com/devakhil06" target="_blank" rel="noreferrer">
             All GitHub projects <Arrow diagonal />
           </a>
         </div>
 
         <div className="project-grid">
-          {projects.map((project) => (
-            <a className={`project-card ${project.className} reveal`} href={project.href} target="_blank" rel="noreferrer" key={project.title}>
+          {projects.map((project, index) => (
+            <a className={`project-card ${project.className} reveal ${index % 2 === 0 ? "reveal-left" : "reveal-right"}`} href={project.href} target="_blank" rel="noreferrer" key={project.title}>
               <div className="project-topline">
                 <span>{project.number}</span>
                 <span>{project.eyebrow}</span>
@@ -195,15 +215,12 @@ export default function Home() {
       <section className="section about-section" id="about">
         <div className="about-intro reveal">
           <p className="kicker">ABOUT</p>
-          <h2>Curious by default.<br />Practical by choice.</h2>
+          <h2>Curious by default.<br /><em>Practical by choice.</em></h2>
         </div>
         <div className="about-grid">
           <div className="about-copy reveal">
             <p className="large-copy">
               I learn by building, testing and improving. That loop has shaped how I approach both intelligent systems and everyday problem-solving.
-            </p>
-            <p>
-              I&apos;m pursuing a B.Tech in Computer Science, specialising in Artificial Intelligence and Machine Learning at CVR College of Engineering. I enjoy turning complex ideas into systems that feel clear, useful and reliable.
             </p>
             <div className="about-actions">
               <a className="text-link" href="/tanuku-akhil-resume.pdf" target="_blank">View résumé <Arrow diagonal /></a>
@@ -226,10 +243,20 @@ export default function Home() {
         <div className="section reveal">
           <div className="skills-heading">
             <p className="kicker">TOOLKIT</p>
-            <h2>The stack behind<br />the work.</h2>
+            <h2>The stack behind<br /><em>the work.</em></h2>
           </div>
-          <div className="skill-cloud" aria-label="Technical skills">
-            {skills.map((skill, index) => <span className="reveal" style={{ transitionDelay: `${index * 45}ms` }} key={skill}>{skill}</span>)}
+          <div className="skill-reels" aria-label="Technical skills">
+            <div className="skill-reel">
+              <div className="skill-reel-track">
+                {[...skills.slice(0, 5), ...skills.slice(0, 5)].map((skill, index) => <span key={`top-${skill}-${index}`}>{skill}<i>↗</i></span>)}
+              </div>
+            </div>
+            <div className="skill-reel reverse">
+              <div className="skill-reel-track">
+                {[...skills.slice(5), ...skills.slice(5)].map((skill, index) => <span key={`bottom-${skill}-${index}`}>{skill}<i>✦</i></span>)}
+              </div>
+            </div>
+            <p className="skill-caption">A practical toolkit for taking ideas from model to interface.</p>
           </div>
         </div>
       </section>
@@ -238,7 +265,7 @@ export default function Home() {
         <div className="credential-columns">
           <div className="achievement-block reveal">
             <p className="kicker">MILESTONES</p>
-            <h2>Proof in<br />the process.</h2>
+            <h2>Proof in<br /><em>the process.</em></h2>
             <div className="achievement-list">
               <article>
                 <strong>Runner-up</strong>
