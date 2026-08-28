@@ -1,107 +1,119 @@
-# vinext-starter
+# Tanuku Akhil — AI/ML Portfolio
 
-A clean full-stack starter running on
-[vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and
-Drizzle support.
+My personal portfolio presents the projects, skills and engineering work I am developing as a Computer Science undergraduate specialising in Artificial Intelligence and Machine Learning.
 
-## Prerequisites
+[View the live portfolio](https://tanukuakhil.netlify.app/) · [GitHub](https://github.com/devakhil06) · [LinkedIn](https://www.linkedin.com/in/akhiltanuku/) · [LeetCode](https://leetcode.com/u/tanukuakhil-codes/)
 
-- Node.js `>=22.13.0`
-- Linux with `flock`, `curl`, and GNU `timeout`
+![Tanuku Akhil — AI/ML Engineer](public/og.png)
 
-## Sites Lifecycle
+## About me
 
-The Sites lifecycle CLI runs the locked dependency install before returning this checkout. Edit the source under `app/`, then checkpoint when a coherent milestone is ready to inspect or share. The remote Sites builder runs `npm run build` against the pushed commit. Do not repeat install or build as a normal pre-checkpoint step.
+I am an AI/ML undergraduate at CVR College of Engineering who enjoys turning complex ideas into clear, useful and reliable products. I am particularly interested in:
 
-This starter does not use `wrangler.jsonc`.
+- AI agents and multi-agent orchestration
+- Machine learning and practical AI systems
+- Large language models and grounded AI applications
+- Financial intelligence, analytics and automation
+- Full-stack development for AI-powered products
+- Computer vision and applied deep learning
 
-`install:ci` is intentionally a single, non-retrying `npm ci`. It refuses a concurrent install for the same project, consumes a matching image-seeded npm cache with `--prefer-offline` while retaining registry fallback for a missing cache object, otherwise downloads and verifies the complete vinext tarball recorded in `package-lock.json`, limits npm to one socket, and terminates a stalled install. `build` applies a short timeout. These helpers target Linux and use GNU `timeout`; they are not native macOS scripts.
+I am currently strengthening my experience by building end-to-end projects that connect data ingestion, intelligent analysis, backend services and responsive user interfaces. I am also exploring opportunities in AI engineering, machine learning and agentic AI.
 
-Scripts that need writable project-scoped home, npm, XDG, and temporary paths use `scripts/sites-env.sh`. The `dev` and `start` scripts honor the caller's runtime environment and keep Wrangler logs inside the checkout. The generated `.sites-runtime/` directory is disposable and ignored by Git.
+## What I work with
 
-## Included Shape
+| Area | Technologies |
+|---|---|
+| AI and ML | Python, machine learning, deep learning, LLMs, computer vision |
+| Backend | FastAPI, Node.js, Express, REST APIs, Socket.IO |
+| Frontend | React, Next.js, TypeScript, Tailwind CSS |
+| Data | PostgreSQL, MongoDB, data processing and analytics |
+| Engineering | Git, GitHub, responsive design, authentication and deployment |
 
-- edit site code under `app/`
-- `app/chatgpt-auth.ts` provides optional dispatch-owned ChatGPT sign-in helpers
-- `.openai/hosting.json` declares optional Sites D1 and R2 bindings
-- `vite.config.ts` simulates declared bindings for local development
-- `db/index.ts` reads the D1 binding from the Cloudflare Worker environment
-- `db/schema.ts` starts intentionally empty
-- `examples/d1/` contains an optional D1 example surface
-- `drizzle.config.ts` supports local migration generation when needed
+## Featured projects
 
-## Workspace Auth Headers
+### Metrivo
 
-OpenAI workspace sites can read the current user's email from
-`oai-authenticated-user-email`.
+An AI-powered business analytics platform that converts UPI statements, bank records and spreadsheets into understandable, data-grounded business insights.
 
-SIWC-authenticated workspace sites may also receive
-`oai-authenticated-user-full-name` when the user's SIWC profile has a non-empty
-`name` claim. The full-name value is percent-encoded UTF-8 and is accompanied by
-`oai-authenticated-user-full-name-encoding: percent-encoded-utf-8`.
+The project explores financial-document ingestion, transaction normalisation, analytics dashboards, grounded AI answers, forecasting and anomaly detection.
 
-Treat the full name as optional and fall back to email when it is absent:
+[Explore Metrivo](https://github.com/devakhil06/Metrivo)
 
-```tsx
-import { headers } from "next/headers";
+### SyncNode
 
-export default async function Home() {
-  const requestHeaders = await headers();
-  const email = requestHeaders.get("oai-authenticated-user-email");
-  const encodedFullName = requestHeaders.get("oai-authenticated-user-full-name");
-  const fullName =
-    encodedFullName &&
-    requestHeaders.get("oai-authenticated-user-full-name-encoding") ===
-      "percent-encoded-utf-8"
-      ? decodeURIComponent(encodedFullName)
-      : null;
+A real-time collaboration workspace where teams can organise projects, assign tasks, share files and follow progress from one interface.
 
-  const displayName = fullName ?? email;
-  // ...
-}
+It combines a React and Vite frontend with Express APIs, JWT authentication, MongoDB, Cloudinary uploads and Socket.IO-powered updates.
+
+[Explore SyncNode](https://github.com/devakhil06/SyncNode)
+
+## Portfolio experience
+
+- Editorial typography using Syne, Instrument Serif, DM Sans and Space Mono
+- Responsive layouts for phones, tablets, laptops and ultrawide displays
+- Scroll reveals, animated carousels and staged on-screen motion
+- Interactive shuttlecock cursor inspired by my interest in badminton
+- Expandable, evidence-based project case studies
+- Real project previews, résumé and certification links
+- Keyboard focus states and reduced-motion accessibility support
+- Open Graph sharing card for LinkedIn and other social platforms
+- Static Netlify export and a Cloudflare-compatible Vinext build
+
+## Built with
+
+- Next.js 16 and React 19
+- TypeScript
+- Tailwind CSS 4
+- Vinext, Vite and Cloudflare Workers tooling
+- Netlify static export
+
+## Run locally
+
+### Requirements
+
+- Node.js 22 or newer
+- npm
+
+```bash
+git clone https://github.com/devakhil06/portfolio.git
+cd portfolio
+npm install
+npm run dev
 ```
 
-## Optional Dispatch-Owned ChatGPT Sign-In
+Open the local address printed in the terminal.
 
-Import the ready-to-use helpers from `app/chatgpt-auth.ts` when the site needs
-optional or required ChatGPT sign-in:
+## Production builds
 
-- Use `getChatGPTUser()` for optional signed-in UI.
-- Use `requireChatGPTUser(returnTo)` for server-rendered pages that should send
-  anonymous visitors through Sign in with ChatGPT.
-- Use `chatGPTSignInPath(returnTo)` and `chatGPTSignOutPath(returnTo)` for
-  browser links or actions.
-- Pass a same-origin relative `returnTo` path for the destination after sign-in
-  or sign-out. The helper validates and safely encodes it.
-- Mark protected pages with `export const dynamic = "force-dynamic"` because
-  they depend on per-request identity headers.
+Build the Cloudflare/Vinext version:
 
-Dispatch owns `/signin-with-chatgpt`, `/signout-with-chatgpt`, `/callback`, the
-OAuth cookies, and identity header injection. Do not implement app routes for
-those reserved paths. Routes that do not import and call the helper remain
-anonymous-compatible.
+```bash
+npm run build
+```
 
-SIWC establishes identity only; it does not prove workspace membership. Use the
-Sites hosting platform's access policy controls for workspace-wide restrictions,
-or enforce explicit server-side membership or allowlist checks.
+Build the static Netlify version:
 
-Use SIWC for account pages, user-specific dashboards, saved records, and write
-actions tied to the current ChatGPT user. Leave public content anonymous.
+```bash
+npm run build:netlify
+```
 
-## Diagnostic Commands
+The Netlify build is exported to `out/`. The repository's `netlify.toml` configures the build command, publish directory, Node.js version and basic security headers.
 
-- `npm run install:ci`: perform the one bounded lockfile install
-- `npm run dev`: start the Vite/Vinext development server
-- `npm run build`: build the deployable Sites artifact
-- `npm run start`: start the built Vinext application
-- `npm test`: build and verify the rendered development-preview metadata
-- `npm run db:generate`: generate Drizzle migrations after schema changes
+## Deployment
 
-Use build commands for targeted diagnosis after a remote failure, not as part of the normal checkpoint path.
+- Netlify: [tanukuakhil.netlify.app](https://tanukuakhil.netlify.app/)
+- ChatGPT Sites: [akhil-aiml-portfolio.tanukuakhil-codes.chatgpt.site](https://akhil-aiml-portfolio.tanukuakhil-codes.chatgpt.site/)
 
-The timeout defaults can be overridden for a controlled canary with `SITES_INSTALL_TIMEOUT`, `SITES_INSTALL_KILL_AFTER`, `SITES_BUILD_TIMEOUT`, and `SITES_BUILD_KILL_AFTER`. A timeout fails the command; the helpers never retry an unchanged install or build.
+Every push to `main` triggers the connected Netlify deployment.
 
-## Learn More
+## Contact
 
-- [vinext Documentation](https://github.com/cloudflare/vinext)
-- [Drizzle D1 Guide](https://orm.drizzle.team/docs/get-started/d1-new)
+I am open to AI agent, AI engineering and machine-learning opportunities where I can build practical systems and continue learning from strong engineering teams.
+
+- Email: [tanukuakhil.tech@gmail.com](mailto:tanukuakhil.tech@gmail.com)
+- LinkedIn: [linkedin.com/in/akhiltanuku](https://www.linkedin.com/in/akhiltanuku/)
+- GitHub: [github.com/devakhil06](https://github.com/devakhil06)
+
+---
+
+Built by Tanuku Akhil in Hyderabad, India.
