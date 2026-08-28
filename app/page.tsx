@@ -78,15 +78,36 @@ export default function Home() {
     const onPointer = (event: PointerEvent) => {
       if (cursorRef.current) {
         cursorRef.current.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0)`;
+        cursorRef.current.classList.add("is-visible");
       }
     };
+    const onPointerOver = (event: PointerEvent) => {
+      const target = event.target instanceof Element ? event.target : null;
+      cursorRef.current?.classList.toggle(
+        "is-interactive",
+        Boolean(target?.closest("a, button, summary")),
+      );
+    };
+    const onPointerDown = () => cursorRef.current?.classList.add("is-pressed");
+    const onPointerUp = () => cursorRef.current?.classList.remove("is-pressed");
+    const onPointerLeave = () => cursorRef.current?.classList.remove("is-visible");
     const pointerQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
     const syncPointerMode = () => {
       window.removeEventListener("pointermove", onPointer);
+      window.removeEventListener("pointerover", onPointerOver);
+      window.removeEventListener("pointerdown", onPointerDown);
+      window.removeEventListener("pointerup", onPointerUp);
+      document.documentElement.removeEventListener("mouseleave", onPointerLeave);
+      document.body.classList.toggle("has-shuttle-cursor", pointerQuery.matches);
       if (pointerQuery.matches) {
         window.addEventListener("pointermove", onPointer, { passive: true });
+        window.addEventListener("pointerover", onPointerOver, { passive: true });
+        window.addEventListener("pointerdown", onPointerDown, { passive: true });
+        window.addEventListener("pointerup", onPointerUp, { passive: true });
+        document.documentElement.addEventListener("mouseleave", onPointerLeave);
       } else if (cursorRef.current) {
         cursorRef.current.style.transform = "translate3d(-100px, -100px, 0)";
+        cursorRef.current.classList.remove("is-visible", "is-interactive", "is-pressed");
       }
     };
     const revealElements = document.querySelectorAll(".reveal");
@@ -124,8 +145,13 @@ export default function Home() {
       window.removeEventListener("resize", onResize);
       window.removeEventListener("keydown", onKeyDown);
       window.removeEventListener("pointermove", onPointer);
+      window.removeEventListener("pointerover", onPointerOver);
+      window.removeEventListener("pointerdown", onPointerDown);
+      window.removeEventListener("pointerup", onPointerUp);
+      document.documentElement.removeEventListener("mouseleave", onPointerLeave);
       pointerQuery.removeEventListener("change", syncPointerMode);
       document.removeEventListener("visibilitychange", onVisibilityChange);
+      document.body.classList.remove("has-shuttle-cursor");
     };
   }, []);
 
@@ -134,7 +160,16 @@ export default function Home() {
   return (
     <main>
       <div className="scroll-progress" ref={progressRef} aria-hidden="true" />
-      <div className="cursor-orbit" ref={cursorRef} aria-hidden="true">🏸</div>
+      <div className="cursor-orbit" ref={cursorRef} aria-hidden="true">
+        <svg className="cursor-shuttle" viewBox="0 0 44 54" focusable="false">
+          <path className="cursor-feather cursor-feather-left" d="M11.4 5.2 21.8 31 14 34.3 3.8 14.5Z" />
+          <path className="cursor-feather cursor-feather-center" d="M18.2 2.7 27.3 29.5 21.8 31 11.4 5.2Z" />
+          <path className="cursor-feather cursor-feather-right" d="M26.4 5.4 34.6 20.7 27.3 29.5 18.2 2.7Z" />
+          <path className="cursor-band" d="m14 34.3 13.3-4.8 2.2 6.2-13.1 4.8Z" />
+          <path className="cursor-cork" d="M16.4 40.5 29.5 35.7l1.2 3.2a7 7 0 0 1-4.2 9l-.8.3a7 7 0 0 1-9-4.2Z" />
+          <path className="cursor-detail" d="m8.1 12.5 18.7 19.1M15.2 5.1l12.3 25.5M31.2 14l-7.9 17.8" />
+        </svg>
+      </div>
 
       <header className={scrolled ? "site-header is-scrolled" : "site-header"}>
         <a className="wordmark" href="#top" aria-label="Akhil, back to top">
