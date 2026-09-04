@@ -154,6 +154,36 @@ button { font: inherit; }
 .case-study-content span { font-family: var(--font-mono); color: var(--blue); font-size: .62rem; font-weight: 700; text-transform: uppercase; }
 .case-study-content p { color: var(--ink); font-size: .98rem; line-height: 1.65; overflow-wrap: anywhere; }
 
+.blogs-section { padding: 150px 0 160px; border-top: 1px solid var(--line); }
+.blogs-heading { display: grid; grid-template-columns: 1fr 2fr; gap: 30px; align-items: start; margin-bottom: 66px; }
+.blogs-heading h2 { margin: 0; font-family: var(--font-display); font-size: clamp(3rem, 5.1vw, 5.6rem); font-weight: 600; line-height: .92; letter-spacing: -.064em; }
+.blogs-heading h2 em { color: var(--blue); font-family: var(--font-serif); font-weight: 400; letter-spacing: -.035em; }
+.blogs-heading > div > p { max-width: 540px; margin: 25px 0 0; color: var(--muted); font-size: 1.02rem; line-height: 1.65; }
+.blog-list { display: grid; gap: 24px; }
+.blog-card { overflow: hidden; border: 1px solid var(--line); background: #fff; transition: transform .45s cubic-bezier(.2,.8,.2,1), box-shadow .45s ease; }
+.blog-card:hover { transform: translateY(-7px); box-shadow: 0 26px 60px rgba(17,18,15,.1); }
+.blog-card-meta { display: grid; grid-template-columns: 52px 1fr auto; align-items: center; gap: 20px; padding: 18px 22px; border-bottom: 1px solid var(--line); background: var(--paper-2); font-family: var(--font-mono); font-size: .68rem; font-weight: 700; letter-spacing: .08em; }
+.blog-card-meta span:nth-child(2) { color: var(--muted); }
+.blog-card-meta a { display: grid; width: 40px; height: 40px; place-items: center; border: 1px solid var(--line); border-radius: 50%; font-size: 1.05rem; transition: background .25s, color .25s, transform .25s; }
+.blog-card-meta a:hover { background: var(--blue); border-color: var(--blue); color: white; transform: rotate(12deg); }
+.blog-card-body { padding: clamp(28px, 4vw, 52px); }
+.blog-card h3 { max-width: 800px; margin: 0; font-family: var(--font-serif); font-size: clamp(2.5rem, 5vw, 4.85rem); font-weight: 400; line-height: .94; letter-spacing: -.05em; }
+.blog-copy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 6vw, 90px); margin-top: 44px; }
+.blog-copy-grid > div { border-top: 1px solid var(--line); padding-top: 16px; }
+.blog-copy-grid span, .blog-future summary { font-family: var(--font-mono); font-size: .72rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
+.blog-copy-grid span { color: var(--blue); }
+.blog-copy-grid p { margin: 15px 0 0; color: var(--muted); font-size: 1rem; line-height: 1.72; }
+.blog-stack { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 40px; }
+.blog-stack span { border: 1px solid var(--line); border-radius: 999px; padding: 9px 12px; font-family: var(--font-mono); font-size: .68rem; font-weight: 700; }
+.blog-future { margin-top: 34px; border-top: 1px solid var(--ink); }
+.blog-future summary { display: flex; justify-content: space-between; align-items: center; gap: 18px; min-height: 58px; cursor: pointer; list-style: none; }
+.blog-future summary::-webkit-details-marker { display: none; }
+.blog-future summary span { font-family: var(--font-body); font-size: 1.3rem; font-weight: 400; transition: transform .25s ease; }
+.blog-future[open] summary span { transform: rotate(45deg); }
+.blog-future ul { display: grid; gap: 12px; margin: 0; padding: 0 0 4px; list-style: none; animation: caseReveal .35s ease both; }
+.blog-future li { position: relative; padding: 0 0 0 20px; color: var(--muted); font-size: .98rem; line-height: 1.55; }
+.blog-future li::before { content: "↗"; position: absolute; left: 0; color: var(--blue); font-family: var(--font-mono); font-weight: 700; }
+
 .about-section { padding: 140px 0; border-top: 1px solid var(--line); }
 .about-intro { display: grid; grid-template-columns: 1fr 2fr; margin-bottom: 70px; }
 .about-grid { display: grid; grid-template-columns: 1.25fr .75fr; gap: 80px; align-items: stretch; }
@@ -331,6 +361,7 @@ footer { font-size: .82rem; }
   .section-heading > a { grid-column: 2; justify-self: start; }
   .about-grid { gap: 52px; }
   .credential-columns { gap: 60px; }
+  .blogs-heading { grid-template-columns: 1fr 2fr; }
 }
 
 @media (max-width: 900px) {
@@ -343,7 +374,7 @@ footer { font-size: .82rem; }
   .section-heading { grid-template-columns: 1fr; }
   .section-heading > a { grid-column: auto; }
   .project-grid { grid-template-columns: 1fr; }
-  .about-grid, .credential-columns, .skills-panel .section { grid-template-columns: 1fr; }
+  .about-grid, .credential-columns, .skills-panel .section, .blogs-heading { grid-template-columns: 1fr; }
   .about-copy { padding-left: 0; }
   .reveal-left { transform: translate(-24px, 22px) rotate(-.5deg); }
   .reveal-right { transform: translate(24px, 22px) rotate(.5deg); }
@@ -368,6 +399,7 @@ footer { font-size: .82rem; }
   .court-line-two { width: 92vw; height: 92vw; right: -48vw; top: 160px; }
   .section { width: calc(100% - 40px); }
   .work-section, .about-section, .credentials-section { padding: 96px 0; }
+  .blogs-section { padding: 96px 0; }
   .section-heading h2, .about-intro h2, .skills-heading h2, .achievement-block h2 { font-size: clamp(2.55rem, 12.8vw, 3.4rem); line-height: .95; }
   .project-card { min-height: 0; }
   .project-visual { height: clamp(220px, 68vw, 290px); padding: 28px; }
@@ -380,6 +412,14 @@ footer { font-size: .82rem; }
   .case-study-content { padding: 18px; }
   .case-study-content > div { grid-template-columns: 1fr; gap: 8px; }
   .about-intro { grid-template-columns: 1fr; gap: 24px; }
+  .blogs-heading { gap: 24px; margin-bottom: 42px; }
+  .blogs-heading > div > p { margin-top: 18px; }
+  .blog-card-meta { grid-template-columns: 34px minmax(0, 1fr) auto; gap: 12px; padding: 14px 16px; font-size: .61rem; }
+  .blog-card-meta a { width: 36px; height: 36px; }
+  .blog-card-body { padding: 28px 20px; }
+  .blog-copy-grid { grid-template-columns: 1fr; gap: 28px; margin-top: 32px; }
+  .blog-stack { margin-top: 30px; }
+  .blog-future { margin-top: 28px; }
   .about-grid { gap: 34px; }
   .about-copy .large-copy { font-size: clamp(1.65rem, 7.5vw, 2rem); }
   .education-card { min-height: 360px; padding: 28px; }
