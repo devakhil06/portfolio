@@ -48,6 +48,41 @@ const projects = [
   },
 ];
 
+const blogs = [
+  {
+    number: "01",
+    label: "PROJECT NOTE · AI FINTECH",
+    title: "Metrivo: giving financial data a usable voice.",
+    href: "https://github.com/devakhil06/Metrivo",
+    problem:
+      "Small businesses often hold their financial story across UPI statements, bank records and spreadsheets. The data exists, but turning it into a clear view of revenue, expenses and risks takes time and manual effort.",
+    why:
+      "Metrivo is designed to shorten the distance between raw transactions and a decision. Its Analyst uses verified data tools so questions about the business are answered from the user's own records, rather than with generic chatbot responses.",
+    stack: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Python", "MongoDB"],
+    future: [
+      "Support more financial-statement formats and ingestion paths.",
+      "Make forecasting and anomaly explanations more configurable for each business.",
+      "Expand the AI Analyst into a more guided planning workflow.",
+    ],
+  },
+  {
+    number: "02",
+    label: "PROJECT NOTE · COLLABORATION",
+    title: "SyncNode: one clear place for team work.",
+    href: "https://github.com/devakhil06/SyncNode",
+    problem:
+      "Small teams commonly spread work across chats, notes and spreadsheets. Tasks lose context, ownership becomes unclear and deadlines are easy to miss.",
+    why:
+      "SyncNode brings workspaces, projects, tasks, files and live updates together so students and small teams can spend less time searching for information and more time moving work forward.",
+    stack: ["React", "Vite", "Node.js", "Express", "MongoDB", "Socket.IO", "Cloudinary", "JWT"],
+    future: [
+      "Add drag-and-drop task planning and a calendar view.",
+      "Introduce notifications, team roles and task comments.",
+      "Build activity history and a dark-mode experience.",
+    ],
+  },
+];
+
 const credentials = [
   { title: "Deep Learning: Neural Networks", issuer: "Udemy", year: "2025", href: "/deep-learning-certificate.pdf" },
   { title: "AI/ML Virtual Internship", issuer: "EduSkills", year: "2025", href: "/google-aiml-eduskills.pdf" },
@@ -177,6 +212,7 @@ export default function Home() {
         </a>
         <nav id="main-navigation" className={menuOpen ? "nav-links is-open" : "nav-links"} aria-label="Main navigation">
           <a href="#work" onClick={closeMenu}>Work</a>
+          <a href="#blogs" onClick={closeMenu}>Blogs</a>
           <a href="#about" onClick={closeMenu}>About</a>
           <a href="#credentials" onClick={closeMenu}>Credentials</a>
         </nav>
@@ -301,6 +337,50 @@ export default function Home() {
                     </div>
                   </details>
                 </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="section blogs-section" id="blogs">
+        <div className="blogs-heading reveal">
+          <p className="kicker">BUILD NOTES</p>
+          <div>
+            <h2>Behind the<br /><em>projects.</em></h2>
+            <p>Short reads on the problems I chose, the systems I used, and where each project can go next.</p>
+          </div>
+        </div>
+
+        <div className="blog-list">
+          {blogs.map((blog) => (
+            <article className="blog-card reveal" key={blog.title}>
+              <div className="blog-card-meta">
+                <span>{blog.number}</span>
+                <span>{blog.label}</span>
+                <a href={blog.href} target="_blank" rel="noreferrer" aria-label={`Open ${blog.title} on GitHub`}><Arrow diagonal /></a>
+              </div>
+              <div className="blog-card-body">
+                <h3>{blog.title}</h3>
+                <div className="blog-copy-grid">
+                  <div>
+                    <span>Problem</span>
+                    <p>{blog.problem}</p>
+                  </div>
+                  <div>
+                    <span>Why this exists</span>
+                    <p>{blog.why}</p>
+                  </div>
+                </div>
+                <div className="blog-stack" aria-label={`${blog.title} technology stack`}>
+                  {blog.stack.map((item) => <span key={item}>{item}</span>)}
+                </div>
+                <details className="blog-future">
+                  <summary>Future development <span aria-hidden="true">+</span></summary>
+                  <ul>
+                    {blog.future.map((item) => <li key={item}>{item}</li>)}
+                  </ul>
+                </details>
               </div>
             </article>
           ))}
