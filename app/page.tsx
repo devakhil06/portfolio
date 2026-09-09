@@ -46,6 +46,21 @@ const projects = [
     build: "Built a shared workspace where teams can create projects, assign tasks, upload files and receive real-time updates from one interface.",
     engineering: "React and Vite frontend, Express APIs, JWT authentication, MongoDB persistence, Cloudinary uploads and Socket.IO collaboration.",
   },
+  {
+    number: "03",
+    title: "Agentic Commerce Gateway",
+    eyebrow: "AGENTIC AI · COMMERCE · PAYMENTS",
+    description:
+      "An AI commerce gateway that makes merchants discoverable, negotiable and transactable by AI buyers with explainable, bounded money actions.",
+    stack: ["Flutter", "FastAPI", "Python", "LangGraph", "PostgreSQL", "Razorpay"],
+    href: "https://github.com/devakhil06/Agentic-Commerce-Gateway",
+    className: "commerce-gateway",
+    image: "https://opengraph.githubassets.com/1/devakhil06/Agentic-Commerce-Gateway",
+    imageAlt: "Agentic Commerce Gateway GitHub project preview",
+    problem: "Merchants need more than a chatbot: they need an agent-readable catalog, bounded negotiation, checkout, payment verification, revenue attribution and a durable audit trail.",
+    build: "Built a Flutter merchant console and FastAPI gateway for buyer intent, offer comparison, negotiation, approvals, Razorpay test checkout and verified revenue analytics.",
+    engineering: "NVIDIA Nemotron and LangGraph propose outcomes while deterministic pricing, margin, inventory, idempotency, reservation and payment-verification services keep authority over every money action.",
+  },
 ];
 
 const blogs = [
